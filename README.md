@@ -1,7 +1,7 @@
 Documentație Proiect: Router pe Raspberry Pi 4 cu Firewall, Display și Interfață Web
 
-1. Introducere
-Scopul proiectului este transformarea unui Raspberry Pi 4 într-un router complet funcțional, capabil să:
+##1. Introducere
+##Scopul proiectului este transformarea unui Raspberry Pi 4 într-un router complet funcțional, capabil să:
 •	Facă toutare între interfețele Ethernet și Ethernet
 •	facă routare între interfețele Ethernet și Wi-Fi (bridge),
 •	ofere funcționalități de firewall și management,
@@ -9,11 +9,12 @@ Scopul proiectului este transformarea unui Raspberry Pi 4 într-un router comple
 •	furnizeze o interfață web securizată pentru administrarea regulilor firewall și vizualizarea statusului rețelei.
 Acest setup transformă Raspberry Pi într-un mini-router administrabil.
 
-2. Tehnologii utilizate
-2.1. Linux Networking (bridge, routing)
+##2. Tehnologii utilizate
+##2.1. Linux Networking (bridge, routing)
 •	Am configurat un bridge (br0) între interfața wireless (wlan0) și Ethernet-ul secundar (eth1).
 •	IP-ul fix al router-ului: 192.168.50.1/24.
 •	Pachetele din LAN sunt rutate către Internet prin interfața principală eth0.
+
 Instrumente folosite:
 •	ip link / ip addr / ip route pentru gestionarea interfețelor.
 •	Script de systemd custom (bridge-br0.service) care:
@@ -21,7 +22,7 @@ o	creează bridge-ul la boot,
 o	mută IP-ul de pe interfețele membre pe br0,
 o	configurează wlan0 și eth1 ca slave în bridge.
 
-2.2. DHCP și DNS
+##2.2. DHCP și DNS
 •	dnsmasq este folosit pentru a oferi IP-uri dinamice în LAN.
 •	Fișierul dnsmasq.conf specifică gama de IP-uri (de ex. 192.168.50.100 – 192.168.50.200) și gateway-ul (Raspberry Pi).
 Avantaje:
@@ -29,7 +30,7 @@ Avantaje:
 •	Păstrează fișierul /var/lib/misc/dnsmasq.leases unde vedem dispozitivele active.
  
 
-2.3. Firewall
+##2.3. Firewall
 •	Am folosit UFW (Uncomplicated Firewall) ca interfață pentru iptables.
 •	Setările includ:
 o	Politici implicite: deny (incoming), allow (outgoing), deny (routed)
@@ -39,12 +40,12 @@ o	:POSTROUTING ACCEPT [0:0]
 o	-A POSTROUTING -o eth0 -j MASQUERADE
 o	COMMIT
 o	Reguli pentru:
-	DNS (53/tcp, 53/udp),
-	DHCP (67/udp),
-	management prin SSH (22/tcp),
-	acces la interfața web (8080/tcp).
+ -	DNS (53/tcp, 53/udp),
+ -	DHCP (67/udp),
+ -	management prin SSH (22/tcp),
+ -	acces la interfața web (8080/tcp).
 
-2.4. Interfața grafică pe LCD SPI
+##2.4. Interfața grafică pe LCD SPI
 Hardware: un display TFT de 2.8" ILI9341 SPI.
 Librării utilizate:
 •	Adafruit Blinka (suport hardware layer),
@@ -57,7 +58,7 @@ Funcționalități:
 •	Pornirea la boot este gestionată printr-un serviciu systemd:
 •	/etc/systemd/system/display-status.service
 
-2.5. Interfața Web (Flask)
+##2.5. Interfața Web (Flask)
 •	Aplicație Python bazată pe Flask, rulată ca serviciu systemd (ufw-web.service).
 •	Funcționalități:
 o	Vizualizare reguli firewall (ufw status numbered).
